@@ -27,12 +27,18 @@ class AuctionViewModel(
         }
     }
 
-    // Simulerad lokal bud-funktion
-    fun placeBid(product: Product, amount: Int) {
+// AuctionViewModel.kt
+
+    fun placeLocalBid(productId: String, newBid: Double) {
+        val productIdInt = productId.toIntOrNull() ?: return // säkert avbryt om det inte går att konvertera
+
         val updatedList = _items.value.map {
-            if (it.id == product.id) it.copy(currentBid = amount)
-            else it
+            if (it.id == productIdInt && newBid > it.currentBid) {
+                it.copy(currentBid = newBid)
+            } else it
         }
         _items.value = updatedList
     }
+
+
 }

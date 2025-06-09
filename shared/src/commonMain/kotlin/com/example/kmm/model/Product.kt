@@ -6,7 +6,7 @@ data class Product(
     val name: String,
     val make: String? = null,
     val description: String? = null,
-    val currentBid: Int,
+    val currentBid: Double,
     val endDate: String,
     val reservePriceStatus: String,
     val municipalityName: String,

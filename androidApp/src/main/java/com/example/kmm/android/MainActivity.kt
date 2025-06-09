@@ -59,7 +59,14 @@ class MainActivity : ComponentActivity() {
                                     Text("Error: $error", color = Color.Red)
                                 }
                                 selectedProduct != null -> {
-                                    val item = selectedProduct!!
+                                    val item = products.firstOrNull { it.id == selectedProduct?.id }
+                                    if (item == null) {
+                                        Text("Produkten hittades inte.")
+                                        return@Column
+                                    }
+
+                                    var newBidText by remember { mutableStateOf("") }
+                                    val isBidValid = newBidText.toDoubleOrNull()?.let { it > item.currentBid } == true
 
                                     Row(
                                         verticalAlignment = Alignment.CenterVertically,
@@ -75,12 +82,38 @@ class MainActivity : ComponentActivity() {
                                         Spacer(Modifier.width(8.dp))
                                         Text("Tillbaka", color = Color.Black)
                                     }
+
                                     Text("Produktnamn: ${item.name}", style = MaterialTheme.typography.titleMedium)
                                     Spacer(Modifier.height(8.dp))
                                     Text("Beskrivning: ${item.description ?: "Ingen beskrivning"}")
                                     Spacer(Modifier.height(8.dp))
-                                    Text("Pris: ${item.currentBid} kr")
+                                    Text("Nuvarande bud: ${"%.2f".format(item.currentBid)} kr")
+                                    Spacer(Modifier.height(8.dp))
                                     Text("Kommun: ${item.municipalityName}")
+                                    Spacer(Modifier.height(16.dp))
+
+                                    OutlinedTextField(
+                                        value = newBidText,
+                                        onValueChange = { newBidText = it },
+                                        label = { Text("Ditt bud i kr") },
+                                        singleLine = true
+                                    )
+
+                                    Spacer(Modifier.height(8.dp))
+
+                                    Button(
+                                        onClick = {
+                                            viewModel.placeLocalBid(item.id.toString(), newBidText.toDouble())
+                                            newBidText = ""
+                                        },
+                                        enabled = isBidValid
+                                    ) {
+                                        Text("Lägg bud")
+                                    }
+
+                                    if (!isBidValid && newBidText.isNotEmpty()) {
+                                        Text("Budet måste vara högre än nuvarande.", color = Color.Red)
+                                    }
                                 }
                                 products.isEmpty() -> {
                                     Text("Laddar produkter…")
