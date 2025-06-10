@@ -22,7 +22,7 @@ import com.example.kmm.network.getHttpClient
 import kotlinx.coroutines.MainScope
 
 class MainActivity : ComponentActivity() {
-    private val apiKey = "97uionf98y34oiuh3498pfy34hf43hfp9834hf9p83h4fg8ogq3hfph9348ofhiu"
+    private val apiKey = ""
     private val viewModel = AuctionViewModel(AuctionApi(getHttpClient(), apiKey), MainScope())
 
     @OptIn(ExperimentalMaterial3Api::class)
