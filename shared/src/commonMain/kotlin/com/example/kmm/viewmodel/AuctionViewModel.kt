@@ -27,10 +27,8 @@ class AuctionViewModel(
         }
     }
 
-// AuctionViewModel.kt
-
     fun placeLocalBid(productId: String, newBid: Double) {
-        val productIdInt = productId.toIntOrNull() ?: return // säkert avbryt om det inte går att konvertera
+        val productIdInt = productId.toIntOrNull() ?: return
 
         val updatedList = _items.value.map {
             if (it.id == productIdInt && newBid > it.currentBid) {
@@ -39,6 +37,4 @@ class AuctionViewModel(
         }
         _items.value = updatedList
     }
-
-
 }
